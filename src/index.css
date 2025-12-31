@@ -1,5 +1,63 @@
 @import "tailwindcss";
 
+@theme {
+  --font-bitter: "Bitter", ui-serif, Georgia, serif;
+  --font-raleway: "Raleway", ui-sans-serif, system-ui, sans-serif;
+
+  --color-charcoal: #12130f;
+  --color-sage: #5b9279;
+  --color-sage-light: #6fa88a;
+  --color-sage-dark: #4a7561;
+  --color-mint: #8fcb9b;
+  --color-mint-light: #a8d9b1;
+  --color-mint-dark: #76b885;
+  --color-cream: #eae6e5;
+  --color-cream-dark: #ddd8d6;
+  --color-taupe: #8f8073;
+  --color-taupe-light: #a59688;
+  --color-taupe-dark: #77685e;
+}
+
+@font-face {
+  font-family: "Bitter";
+  src:
+    url("/fonts/bitter-bold.woff2") format("woff2"),
+    url("/fonts/bitter-bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Raleway";
+  src:
+    url("/fonts/raleway-regular.woff2") format("woff2"),
+    url("/fonts/raleway-regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Raleway";
+  src:
+    url("/fonts/raleway-medium.woff2") format("woff2"),
+    url("/fonts/raleway-medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Raleway";
+  src:
+    url("/fonts/raleway-semibold.woff2") format("woff2"),
+    url("/fonts/raleway-semibold.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
