@@ -32,3 +32,5 @@ pnpm install
 ```bash
 pnpm dev
 ```
+
+_Mostly vibe coded with Claude Code_
