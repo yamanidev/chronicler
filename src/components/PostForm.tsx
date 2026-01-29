@@ -155,7 +155,9 @@ export function PostForm({ onPublish }: PostFormProps) {
       <div class="mx-auto max-w-3xl">
         <div class="mb-6 text-center">
           <h1 class="font-bitter text-charcoal text-4xl font-bold">Create Post</h1>
-          <p class="text-taupe mt-2">Fill in the details below and mark as published when ready</p>
+          <p class="text-taupe mt-2">
+            Write your content, copy it to each platform, then mark as published.
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} class="space-y-6">

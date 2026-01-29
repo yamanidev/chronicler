@@ -15,10 +15,13 @@ export function WelcomeStep({
   return (
     <div class="bg-cream flex min-h-screen items-center justify-center p-8">
       <div class="w-full max-w-lg rounded-lg bg-white p-8 shadow-lg">
-        <h2 class="font-bitter text-charcoal mb-4 text-3xl font-bold">Welcome to Chronicler</h2>
+        <h2 class="font-bitter text-charcoal mb-2 text-3xl font-bold">Chronicler</h2>
+        <p class="text-charcoal mb-4 text-lg font-medium">
+          Write once, copy to platforms, archive locally.
+        </p>
         <p class="text-taupe mb-6">
-          Minimize friction for your social media cross-posting and archive your content
-          automatically.
+          A simple place to draft your social media posts, copy them to your clipboard, and keep a
+          Markdown record of everything you publish.
         </p>
 
         <div class="border-cream-dark my-6 border-t"></div>
