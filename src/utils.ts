@@ -19,10 +19,10 @@ export function getDatePrefix(date: Date): string {
 }
 
 export function generateMarkdown(post: Post): string {
-  const platformsYaml = post.platforms
+  const platformsYaml = (Object.keys(SUPPORTED_PLATFORMS) as (keyof typeof SUPPORTED_PLATFORMS)[])
     .map((platform) => {
       const url = post.links?.[platform] || "";
-      return `  - name: ${SUPPORTED_PLATFORMS[platform]}\n    url: ${url}`;
+      return `${platform}: ${url}`;
     })
     .join("\n");
 
@@ -31,7 +31,6 @@ export function generateMarkdown(post: Post): string {
   let markdown = `---
 date: ${formatDate(new Date())}
 categories: ${categoriesYaml}
-platforms:
 ${platformsYaml}
 ---
 
