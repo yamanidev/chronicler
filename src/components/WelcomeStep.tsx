@@ -1,3 +1,5 @@
+import { isFileSystemAccessSupported } from "../utils";
+
 export function WelcomeStep({
   storedHandle,
   onContinue,
@@ -5,6 +7,49 @@ export function WelcomeStep({
   storedHandle?: FileSystemDirectoryHandle;
   onContinue: (folderHandle?: FileSystemDirectoryHandle) => void;
 }) {
+  if (!isFileSystemAccessSupported) {
+    return (
+      <div class="bg-cream flex min-h-screen items-center justify-center p-8">
+        <div class="w-full max-w-lg rounded-lg bg-white p-8 shadow-lg">
+          <h2 class="font-bitter text-charcoal mb-2 text-3xl font-bold">Chronicler</h2>
+          <p class="text-charcoal mb-4 text-lg font-medium">Write once, copy to platforms.</p>
+          <p class="text-taupe mb-6">
+            A simple place to draft your social media posts and copy them to your clipboard.
+          </p>
+
+          <div class="border-cream-dark my-6 border-t"></div>
+
+          <div class="space-y-4">
+            <div class="bg-mint-light/30 rounded-lg p-4">
+              <div class="flex gap-3">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  class="stroke-sage h-6 w-6 shrink-0">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span class="text-charcoal text-sm">
+                  Your browser doesn't support the File System Access API, so local archiving is
+                  unavailable. You can still create and copy content to your platforms.
+                </span>
+              </div>
+            </div>
+            <button
+              class="bg-sage hover:bg-sage-dark w-full rounded-lg px-6 py-3 font-semibold text-white transition"
+              onClick={() => onContinue()}>
+              Get Started
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const selectDirectory = async () => {
     try {
       const handle = await window.showDirectoryPicker();

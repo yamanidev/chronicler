@@ -1,5 +1,6 @@
 import { useEffect, useState } from "preact/hooks";
 import { clearHandle, loadHandle, saveHandle } from "../storage";
+import { isFileSystemAccessSupported } from "../utils";
 
 export function usePersistedDirectoryHandle() {
   // undefined: not selected (default)
@@ -13,6 +14,11 @@ export function usePersistedDirectoryHandle() {
   const [grantedOnLoad, setGrantedOnLoad] = useState(false);
 
   useEffect(() => {
+    if (!isFileSystemAccessSupported) {
+      setIsLoading(false);
+      return;
+    }
+
     loadHandle()
       .then(async (handle) => {
         if (!handle) return;

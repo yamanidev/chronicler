@@ -4,7 +4,7 @@ import { DirectoryIndicator } from "./components/DirectoryIndicator";
 import { SocialLinks } from "./components/SocialLinks";
 import type { Platform, Post, PostFormData } from "./types";
 import { usePersistedDirectoryHandle } from "./hooks/usePersistedDirectoryHandle";
-import { archivePost, slugify } from "./utils";
+import { archivePost, isFileSystemAccessSupported, slugify } from "./utils";
 
 export function App() {
   const [step, setStep] = useState<"welcome" | "form" | "links" | "success">("welcome");
@@ -23,6 +23,8 @@ export function App() {
   };
 
   const handlePublish = (data: PostFormData) => {
+    if (!isFileSystemAccessSupported) return;
+
     setPostData(data);
     setStep("links");
   };
