@@ -1,14 +1,27 @@
 export function WelcomeStep({
+  storedHandle,
   onContinue,
 }: {
+  storedHandle?: FileSystemDirectoryHandle;
   onContinue: (folderHandle?: FileSystemDirectoryHandle) => void;
 }) {
-  const selectFolder = async () => {
+  const selectDirectory = async () => {
     try {
       const handle = await window.showDirectoryPicker();
       onContinue(handle);
     } catch (error) {
-      console.error("Folder selection cancelled or failed:", error);
+      console.error("Directory selection cancelled or failed:", error);
+    }
+  };
+
+  const restoreDirectory = async () => {
+    try {
+      const permission = await storedHandle!.requestPermission({ mode: "readwrite" });
+      if (permission === "granted") {
+        onContinue(storedHandle);
+      }
+    } catch (error) {
+      console.error("Failed to restore directory access:", error);
     }
   };
 
@@ -27,23 +40,51 @@ export function WelcomeStep({
         <div class="border-cream-dark my-6 border-t"></div>
 
         <div class="space-y-4">
-          <p class="text-taupe text-sm">
-            You can optionally select a folder to archive your published posts. Posts will be saved
-            as Markdown files with attachments.
-          </p>
-
-          <div class="flex flex-col gap-3">
-            <button
-              class="bg-sage hover:bg-sage-dark w-full rounded-lg px-6 py-3 font-semibold text-white transition"
-              onClick={selectFolder}>
-              Select Archive Folder
-            </button>
-            <button
-              class="border-taupe-light text-taupe hover:bg-cream w-full rounded-lg border px-6 py-3 font-semibold transition"
-              onClick={() => onContinue()}>
-              Skip (Don't Archive)
-            </button>
-          </div>
+          {storedHandle ? (
+            <>
+              <p class="text-taupe text-sm">
+                You previously archived to{" "}
+                <span class="text-charcoal font-medium">"{storedHandle.name}"</span>. Grant access
+                to continue using it.
+              </p>
+              <div class="flex flex-col gap-3">
+                <button
+                  class="bg-sage hover:bg-sage-dark w-full rounded-lg px-6 py-3 font-semibold text-white transition"
+                  onClick={restoreDirectory}>
+                  Continue with "{storedHandle.name}"
+                </button>
+                <button
+                  class="border-taupe-light text-taupe hover:bg-cream w-full rounded-lg border px-6 py-3 font-semibold transition"
+                  onClick={selectDirectory}>
+                  Select a Different Folder
+                </button>
+                <button
+                  class="border-taupe-light text-taupe hover:bg-cream w-full rounded-lg border px-6 py-3 font-semibold transition"
+                  onClick={() => onContinue()}>
+                  Skip (Don't Archive)
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <p class="text-taupe text-sm">
+                You can optionally select a folder to archive your published posts. Posts will be
+                saved as Markdown files with attachments.
+              </p>
+              <div class="flex flex-col gap-3">
+                <button
+                  class="bg-sage hover:bg-sage-dark w-full rounded-lg px-6 py-3 font-semibold text-white transition"
+                  onClick={selectDirectory}>
+                  Select Archive Folder
+                </button>
+                <button
+                  class="border-taupe-light text-taupe hover:bg-cream w-full rounded-lg border px-6 py-3 font-semibold transition"
+                  onClick={() => onContinue()}>
+                  Skip (Don't Archive)
+                </button>
+              </div>
+            </>
+          )}
         </div>
 
         <div class="bg-mint-light/30 mt-6 rounded-lg p-4">

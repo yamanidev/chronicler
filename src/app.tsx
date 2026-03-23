@@ -1,22 +1,25 @@
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import { LinkCollectionForm } from "./components/LinkCollectionForm";
 import { PostForm } from "./components/PostForm";
 import { SuccessStep } from "./components/SuccessStep";
 import { WelcomeStep } from "./components/WelcomeStep";
 import type { Platform, Post, PostFormData } from "./types";
+import { usePersistedDirectoryHandle } from "./usePersistedDirectoryHandle";
 import { archivePost, slugify } from "./utils";
 
 export function App() {
   const [step, setStep] = useState<"welcome" | "form" | "links" | "success">("welcome");
-  // undefined (default): not selected
-  // null: user skipped the selection of an archival directory
-  // FileSystemDirectoryHandle: the user selected a directory successfully
-  const [folderHandle, setFolderHandle] = useState<FileSystemDirectoryHandle | null>();
+  const { directoryHandle, isLoading, grantedOnLoad, persistHandle } =
+    usePersistedDirectoryHandle();
   const [postData, setPostData] = useState<PostFormData | null>(null);
-  const [archivedFolder, setArchivedFolder] = useState<string>("");
+  const [archivedDirectory, setArchivedDirectory] = useState<string>("");
 
-  const handleWelcomeContinue = (handle?: FileSystemDirectoryHandle) => {
-    setFolderHandle(handle);
+  useEffect(() => {
+    if (grantedOnLoad) setStep("form");
+  }, [grantedOnLoad]);
+
+  const handleWelcomeContinue = async (handle?: FileSystemDirectoryHandle) => {
+    await persistHandle(handle);
     setStep("form");
   };
 
@@ -34,10 +37,10 @@ export function App() {
       links,
     };
 
-    if (folderHandle) {
+    if (directoryHandle) {
       try {
-        const folderName = await archivePost(post, folderHandle);
-        setArchivedFolder(folderName);
+        const directoryName = await archivePost(post, directoryHandle);
+        setArchivedDirectory(directoryName);
         setStep("success");
       } catch (error) {
         console.error("Failed to archive post:", error);
@@ -51,19 +54,24 @@ export function App() {
 
   const handleCreateAnother = () => {
     setPostData(null);
-    setArchivedFolder("");
+    setArchivedDirectory("");
     setStep("form");
   };
 
   return (
     <>
-      {step === "welcome" && <WelcomeStep onContinue={handleWelcomeContinue} />}
+      {!isLoading && !grantedOnLoad && step === "welcome" && (
+        <WelcomeStep
+          storedHandle={directoryHandle ?? undefined}
+          onContinue={handleWelcomeContinue}
+        />
+      )}
       {step === "form" && <PostForm onPublish={handlePublish} />}
       {step === "links" && postData && (
         <LinkCollectionForm platforms={postData.platforms} onSubmit={handleLinksSubmit} />
       )}
       {step === "success" && (
-        <SuccessStep folderName={archivedFolder} onCreateAnother={handleCreateAnother} />
+        <SuccessStep directoryName={archivedDirectory} onCreateAnother={handleCreateAnother} />
       )}
 
       <div class="fixed top-4 right-4 flex gap-3">
