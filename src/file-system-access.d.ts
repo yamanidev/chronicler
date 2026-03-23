@@ -1,7 +1,15 @@
+type FileSystemPermissionMode = "read" | "readwrite";
+
+interface FileSystemPermissionDescriptor {
+  mode?: FileSystemPermissionMode;
+}
+
 interface FileSystemHandle {
   readonly kind: "file" | "directory";
   readonly name: string;
   isSameEntry(other: FileSystemHandle): Promise<boolean>;
+  queryPermission(descriptor?: FileSystemPermissionDescriptor): Promise<PermissionState>;
+  requestPermission(descriptor?: FileSystemPermissionDescriptor): Promise<PermissionState>;
 }
 
 interface FileSystemFileHandle extends FileSystemHandle {
