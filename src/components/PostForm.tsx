@@ -1,6 +1,6 @@
 import { useState, useEffect } from "preact/hooks";
 import type { Platform, PostFormData } from "../types";
-import { slugify, copyToClipboard } from "../utils";
+import { copyToClipboard, isFileSystemAccessSupported, slugify } from "../utils";
 
 interface PostFormProps {
   onPublish: (data: PostFormData) => void;
@@ -126,7 +126,7 @@ export function PostForm({ onPublish }: PostFormProps) {
   const handleSubmit = (e: Event) => {
     e.preventDefault();
 
-    if (!title.trim()) {
+    if (isFileSystemAccessSupported && !title.trim()) {
       alert("Please provide a title");
       return;
     }
@@ -136,7 +136,7 @@ export function PostForm({ onPublish }: PostFormProps) {
       return;
     }
 
-    if (platforms.length === 0) {
+    if (isFileSystemAccessSupported && platforms.length === 0) {
       alert("Please select at least one platform");
       return;
     }
@@ -148,6 +148,11 @@ export function PostForm({ onPublish }: PostFormProps) {
       categories,
       platforms,
     });
+
+    if (!isFileSystemAccessSupported) {
+      setContent("");
+      setAttachments([]);
+    }
   };
 
   return (
@@ -163,17 +168,19 @@ export function PostForm({ onPublish }: PostFormProps) {
         <form onSubmit={handleSubmit} class="space-y-6">
           <div class="rounded-lg bg-white p-6 shadow-lg">
             <div class="space-y-6">
-              <div>
-                <label class="text-charcoal mb-2 block text-sm font-semibold">Title</label>
-                <input
-                  type="text"
-                  placeholder="Enter post title"
-                  class="border-taupe-light text-charcoal focus:border-sage focus:ring-mint-light w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
-                  value={title}
-                  onInput={(e) => setTitle((e.target as HTMLInputElement).value)}
-                />
-                {title && <p class="text-sage mt-1 text-sm">Slug: {slug}</p>}
-              </div>
+              {isFileSystemAccessSupported && (
+                <div>
+                  <label class="text-charcoal mb-2 block text-sm font-semibold">Title</label>
+                  <input
+                    type="text"
+                    placeholder="Enter post title"
+                    class="border-taupe-light text-charcoal focus:border-sage focus:ring-mint-light w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
+                    value={title}
+                    onInput={(e) => setTitle((e.target as HTMLInputElement).value)}
+                  />
+                  {title && <p class="text-sage mt-1 text-sm">Slug: {slug}</p>}
+                </div>
+              )}
 
               <div>
                 <div class="mb-2 flex items-center justify-between">
@@ -294,66 +301,70 @@ export function PostForm({ onPublish }: PostFormProps) {
                 )}
               </div>
 
-              <div>
-                <label class="text-charcoal mb-2 block text-sm font-semibold">Categories</label>
-                <div class="flex gap-2">
-                  <input
-                    type="text"
-                    placeholder="Add a category"
-                    class="border-taupe-light text-charcoal focus:border-sage focus:ring-mint-light flex-1 rounded-lg rounded-r-none border border-r-0 px-4 py-2 focus:ring-2 focus:outline-none"
-                    value={categoryInput}
-                    onInput={(e) => setCategoryInput((e.target as HTMLInputElement).value)}
-                    onKeyPress={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        handleAddCategory();
-                      }
-                    }}
-                  />
-                  <button
-                    type="button"
-                    class="bg-sage hover:bg-sage-dark rounded-lg rounded-l-none px-6 py-2 font-semibold text-white"
-                    onClick={handleAddCategory}>
-                    Add
-                  </button>
+              {isFileSystemAccessSupported && (
+                <div>
+                  <label class="text-charcoal mb-2 block text-sm font-semibold">Categories</label>
+                  <div class="flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="Add a category"
+                      class="border-taupe-light text-charcoal focus:border-sage focus:ring-mint-light flex-1 rounded-lg rounded-r-none border border-r-0 px-4 py-2 focus:ring-2 focus:outline-none"
+                      value={categoryInput}
+                      onInput={(e) => setCategoryInput((e.target as HTMLInputElement).value)}
+                      onKeyPress={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          handleAddCategory();
+                        }
+                      }}
+                    />
+                    <button
+                      type="button"
+                      class="bg-sage hover:bg-sage-dark rounded-lg rounded-l-none px-6 py-2 font-semibold text-white"
+                      onClick={handleAddCategory}>
+                      Add
+                    </button>
+                  </div>
+                  {categories.length > 0 && (
+                    <div class="mt-2 flex flex-wrap gap-2">
+                      {categories.map((category) => (
+                        <span
+                          key={category}
+                          class="bg-mint-light text-charcoal inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-medium">
+                          {category}
+                          <button
+                            type="button"
+                            class="hover:bg-mint rounded-full"
+                            onClick={() => handleRemoveCategory(category)}>
+                            ✕
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
-                {categories.length > 0 && (
-                  <div class="mt-2 flex flex-wrap gap-2">
-                    {categories.map((category) => (
-                      <span
-                        key={category}
-                        class="bg-mint-light text-charcoal inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-medium">
-                        {category}
-                        <button
-                          type="button"
-                          class="hover:bg-mint rounded-full"
-                          onClick={() => handleRemoveCategory(category)}>
-                          ✕
-                        </button>
-                      </span>
+              )}
+
+              {isFileSystemAccessSupported && (
+                <div>
+                  <label class="text-charcoal mb-2 block text-sm font-semibold">
+                    Platforms to Publish
+                  </label>
+                  <div class="flex flex-wrap gap-4">
+                    {(["facebook", "linkedin", "twitter"] as Platform[]).map((platform) => (
+                      <label key={platform} class="flex cursor-pointer items-center gap-2">
+                        <input
+                          type="checkbox"
+                          class="border-taupe-light text-sage focus:ring-mint h-4 w-4 rounded focus:ring-2"
+                          checked={platforms.includes(platform)}
+                          onChange={() => togglePlatform(platform)}
+                        />
+                        <span class="text-charcoal capitalize">{platform}</span>
+                      </label>
                     ))}
                   </div>
-                )}
-              </div>
-
-              <div>
-                <label class="text-charcoal mb-2 block text-sm font-semibold">
-                  Platforms to Publish
-                </label>
-                <div class="flex flex-wrap gap-4">
-                  {(["facebook", "linkedin", "twitter"] as Platform[]).map((platform) => (
-                    <label key={platform} class="flex cursor-pointer items-center gap-2">
-                      <input
-                        type="checkbox"
-                        class="border-taupe-light text-sage focus:ring-mint h-4 w-4 rounded focus:ring-2"
-                        checked={platforms.includes(platform)}
-                        onChange={() => togglePlatform(platform)}
-                      />
-                      <span class="text-charcoal capitalize">{platform}</span>
-                    </label>
-                  ))}
                 </div>
-              </div>
+              )}
             </div>
           </div>
 
