@@ -23,18 +23,14 @@ export function App() {
   };
 
   const handlePublish = (data: PostFormData) => {
+    if (!isFileSystemAccessSupported) return;
+
     setPostData(data);
     setStep("links");
   };
 
   const handleLinksSubmit = async (links: Record<Platform, string>) => {
     if (!postData) return;
-
-    if (!isFileSystemAccessSupported) {
-      setStep("success");
-
-      return;
-    }
 
     const post: Post = {
       ...postData,
