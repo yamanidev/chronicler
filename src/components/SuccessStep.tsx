@@ -1,8 +1,8 @@
 export function SuccessStep({
-  folderName,
+  directoryName,
   onCreateAnother,
 }: {
-  folderName: string;
+  directoryName: string;
   onCreateAnother: () => void;
 }) {
   return (
@@ -49,7 +49,7 @@ export function SuccessStep({
             <div class="flex-1">
               <div class="text-charcoal font-semibold">Saved to:</div>
               <div class="text-taupe-dark mt-1 text-sm">
-                <code class="bg-mint-light rounded px-2 py-1">{folderName}/post.md</code>
+                <code class="bg-mint-light rounded px-2 py-1">{directoryName}/post.md</code>
               </div>
             </div>
           </div>

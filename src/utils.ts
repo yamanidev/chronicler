@@ -62,17 +62,17 @@ export async function copyToClipboard(text: string): Promise<void> {
 
 export async function archivePost(
   post: Post,
-  folderHandle: FileSystemDirectoryHandle,
+  directoryHandle: FileSystemDirectoryHandle,
 ): Promise<string> {
   const datePrefix = getDatePrefix(new Date());
-  const folderName = `${datePrefix}-${post.slug}`;
+  const directoryName = `${datePrefix}-${post.slug}`;
 
-  const postFolderHandle = await folderHandle.getDirectoryHandle(folderName, {
+  const postDirectoryHandle = await directoryHandle.getDirectoryHandle(directoryName, {
     create: true,
   });
 
   const markdown = generateMarkdown(post);
-  const markdownFileHandle = await postFolderHandle.getFileHandle("post.md", {
+  const markdownFileHandle = await postDirectoryHandle.getFileHandle("post.md", {
     create: true,
   });
   const writable = await markdownFileHandle.createWritable();
@@ -80,7 +80,7 @@ export async function archivePost(
   await writable.close();
 
   for (const file of post.attachments) {
-    const fileHandle = await postFolderHandle.getFileHandle(file.name, {
+    const fileHandle = await postDirectoryHandle.getFileHandle(file.name, {
       create: true,
     });
     const writable = await fileHandle.createWritable();
@@ -88,5 +88,5 @@ export async function archivePost(
     await writable.close();
   }
 
-  return folderName;
+  return directoryName;
 }
