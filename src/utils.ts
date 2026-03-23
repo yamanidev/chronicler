@@ -51,6 +51,8 @@ ${post.content}`;
   return markdown;
 }
 
+export const isFileSystemAccessSupported = typeof window.showDirectoryPicker === "function";
+
 export async function copyToClipboard(text: string): Promise<void> {
   try {
     await navigator.clipboard.writeText(text);
