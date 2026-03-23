@@ -1,10 +1,7 @@
 import { useEffect, useState } from "preact/hooks";
-import { LinkCollectionForm } from "./components/LinkCollectionForm";
-import { PostForm } from "./components/PostForm";
-import { SuccessStep } from "./components/SuccessStep";
-import { WelcomeStep } from "./components/WelcomeStep";
+import { CurrentStep } from "./components/CurrentStep";
 import type { Platform, Post, PostFormData } from "./types";
-import { usePersistedDirectoryHandle } from "./usePersistedDirectoryHandle";
+import { usePersistedDirectoryHandle } from "./hooks/usePersistedDirectoryHandle";
 import { archivePost, slugify } from "./utils";
 
 export function App() {
@@ -60,19 +57,18 @@ export function App() {
 
   return (
     <>
-      {!isLoading && !grantedOnLoad && step === "welcome" && (
-        <WelcomeStep
-          storedHandle={directoryHandle ?? undefined}
-          onContinue={handleWelcomeContinue}
-        />
-      )}
-      {step === "form" && <PostForm onPublish={handlePublish} />}
-      {step === "links" && postData && (
-        <LinkCollectionForm platforms={postData.platforms} onSubmit={handleLinksSubmit} />
-      )}
-      {step === "success" && (
-        <SuccessStep directoryName={archivedDirectory} onCreateAnother={handleCreateAnother} />
-      )}
+      <CurrentStep
+        step={step}
+        isLoading={isLoading}
+        grantedOnLoad={grantedOnLoad}
+        directoryHandle={directoryHandle}
+        postData={postData}
+        archivedDirectory={archivedDirectory}
+        onWelcomeContinue={handleWelcomeContinue}
+        onPublish={handlePublish}
+        onLinksSubmit={handleLinksSubmit}
+        onCreateAnother={handleCreateAnother}
+      />
 
       <div class="fixed top-4 right-4 flex gap-3">
         <a
