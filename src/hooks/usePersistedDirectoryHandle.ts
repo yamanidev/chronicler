@@ -1,5 +1,5 @@
 import { useEffect, useState } from "preact/hooks";
-import { clearHandle, loadHandle, saveHandle } from "./storage";
+import { clearHandle, loadHandle, saveHandle } from "../storage";
 
 export function usePersistedDirectoryHandle() {
   // undefined: not selected (default)

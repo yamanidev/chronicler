@@ -1,7 +1,7 @@
 import { useEffect, useState } from "preact/hooks";
 import { CurrentStep } from "./components/CurrentStep";
 import type { Platform, Post, PostFormData } from "./types";
-import { usePersistedDirectoryHandle } from "./usePersistedDirectoryHandle";
+import { usePersistedDirectoryHandle } from "./hooks/usePersistedDirectoryHandle";
 import { archivePost, slugify } from "./utils";
 
 export function App() {
