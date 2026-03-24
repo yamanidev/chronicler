@@ -1,7 +1,6 @@
 import { useEffect, useState } from "preact/hooks";
 import { CurrentStep } from "./components/CurrentStep";
 import { DirectoryIndicator } from "./components/DirectoryIndicator";
-import { AppFooter } from "./components/AppFooter";
 import type { Post, PostFormData } from "./types";
 import { usePersistedDirectoryHandle } from "./hooks/usePersistedDirectoryHandle";
 import { archivePost, isFileSystemAccessSupported, slugify } from "./utils";
@@ -76,7 +75,6 @@ export function App() {
           onChangeDirectory={handleChangeDirectory}
         />
       )}
-      <AppFooter />
     </>
   );
 }

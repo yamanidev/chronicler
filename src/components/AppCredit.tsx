@@ -1,6 +1,6 @@
-export function AppFooter() {
+export function AppCredit({ class: className }: { class?: string } = {}) {
   return (
-    <div class="fixed right-4 bottom-4 flex items-center gap-3">
+    <div class={`mt-1 flex items-center gap-2 ${className ?? ""}`}>
       <a
         href="https://mohamedyamani.com?utm_source=chronicler"
         target="_blank"

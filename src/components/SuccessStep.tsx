@@ -1,3 +1,5 @@
+import { AppCredit } from "./AppCredit";
+
 export function SuccessStep({
   directoryName,
   onCreateAnother,
@@ -31,6 +33,7 @@ export function SuccessStep({
         </h2>
 
         <p class="text-taupe mt-2 text-center">Your post has been saved to the archive folder.</p>
+        <AppCredit class="justify-center" />
 
         <div class="bg-mint-light/30 mt-6 rounded-lg p-4">
           <div class="flex gap-3">

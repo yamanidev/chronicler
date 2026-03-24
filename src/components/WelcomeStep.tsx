@@ -1,4 +1,5 @@
 import { isFileSystemAccessSupported } from "../utils";
+import { AppCredit } from "./AppCredit";
 
 export function WelcomeStep({
   storedHandle,
@@ -13,9 +14,10 @@ export function WelcomeStep({
         <div class="w-full max-w-lg rounded-lg bg-white p-8 shadow-lg">
           <h2 class="font-bitter text-charcoal mb-2 text-3xl font-bold">Chronicler</h2>
           <p class="text-charcoal mb-4 text-lg font-medium">Write once, copy to platforms.</p>
-          <p class="text-taupe mb-6">
+          <p class="text-taupe mb-4">
             A simple place to draft your social media posts and copy them to your clipboard.
           </p>
+          <AppCredit />
 
           <div class="border-cream-dark my-6 border-t"></div>
 
@@ -77,10 +79,11 @@ export function WelcomeStep({
         <p class="text-charcoal mb-4 text-lg font-medium">
           Write once, copy to platforms, archive locally.
         </p>
-        <p class="text-taupe mb-6">
+        <p class="text-taupe mb-4">
           A simple place to draft your social media posts, copy them to your clipboard, and keep a
           Markdown record of everything you publish.
         </p>
+        <AppCredit />
 
         <div class="border-cream-dark my-6 border-t"></div>
 

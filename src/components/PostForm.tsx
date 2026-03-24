@@ -1,4 +1,5 @@
 import { useState, useEffect } from "preact/hooks";
+import { AppCredit } from "./AppCredit";
 import { SUPPORTED_PLATFORMS } from "../constants";
 import { clearDraft } from "../storage";
 import { usePostDraft } from "../hooks/usePostDraft";
@@ -198,6 +199,7 @@ export function PostForm({ onPublish }: PostFormProps) {
           <p class="text-taupe mt-2">
             Write your content, copy it to each platform, then mark as published.
           </p>
+          <AppCredit class="justify-center" />
         </div>
 
         <form onSubmit={handleSubmit} class="space-y-6">
