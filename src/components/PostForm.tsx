@@ -368,7 +368,7 @@ export function PostForm({ onPublish }: PostFormProps) {
               {isFileSystemAccessSupported && (
                 <div>
                   <label class="text-charcoal mb-2 block text-sm font-semibold">Categories</label>
-                  <div class="flex gap-2">
+                  <div class="flex">
                     <input
                       type="text"
                       placeholder="Add a category"
