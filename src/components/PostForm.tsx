@@ -208,7 +208,28 @@ export function PostForm({ onPublish }: PostFormProps) {
             <div class="space-y-6">
               {isFileSystemAccessSupported && (
                 <div>
-                  <label class="text-charcoal mb-2 block text-sm font-semibold">Title</label>
+                  <div class="mb-2 flex items-center gap-1.5">
+                    <label class="text-charcoal text-sm font-semibold">Title</label>
+                    <div class="group relative flex items-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="text-taupe h-4 w-4 cursor-default"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                      <div class="bg-charcoal text-cream pointer-events-none absolute bottom-full left-1/2 mb-2 w-56 -translate-x-1/2 rounded-lg px-3 py-2 text-xs opacity-0 transition-opacity group-hover:opacity-100">
+                        Used to name the archive folder and generate the post slug.
+                        <div class="border-t-charcoal] absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent"></div>
+                      </div>
+                    </div>
+                  </div>
                   <input
                     type="text"
                     placeholder="Enter post title"
