@@ -349,8 +349,11 @@ export function PostForm({ onPublish }: PostFormProps) {
                     {(Object.entries(SUPPORTED_PLATFORMS) as [Platform, string][]).map(
                       ([platform, label]) => (
                         <div key={platform} class="flex min-w-0 flex-1 flex-col gap-1">
-                          <span class="text-charcoal text-sm">{label}</span>
+                          <label for={platform} class="text-charcoal text-sm">
+                            {label}
+                          </label>
                           <input
+                            id={platform}
                             type="url"
                             placeholder={
                               {
