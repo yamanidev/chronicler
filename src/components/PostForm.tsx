@@ -201,6 +201,7 @@ export function PostForm({ onPublish }: PostFormProps) {
                   </button>
                 </div>
                 <textarea
+                  dir="auto"
                   placeholder="Write your post content here..."
                   class="border-taupe-light text-charcoal focus:border-sage focus:ring-mint-light h-40 w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
                   value={content}
