@@ -449,8 +449,8 @@ export function PostForm({ onPublish }: PostFormProps) {
                             type="url"
                             placeholder={
                               {
-                                facebook: "https://www.facebook.com/share/p/bananaPiwPiw/",
-                                twitter: "https://x.com/yamanidev/status/42424242",
+                                facebook: "https://www.facebook.com/username/posts/bananaPiwPiw",
+                                twitter: "https://x.com/username/status/42424242",
                                 linkedin: "https://www.linkedin.com/posts/yamanidev_...",
                               }[platform]
                             }
