@@ -8,9 +8,8 @@ export function usePostDraft(
   formData: PostFormData,
   isDirty: boolean,
   onRestore: (data: PostFormData) => void,
-): { isRestoring: boolean; saveStatus: SaveStatus } {
-  const [isRestoring, setIsRestoring] = useState<boolean>(true);
-  const [saveStatus, setSaveStatus] = useState<SaveStatus>("idle");
+): { saveStatus: SaveStatus } {
+  const [saveStatus, setSaveStatus] = useState<SaveStatus>("restoring");
   const { title, content, attachments, categories, links } = formData;
 
   const onRestoreRef = useRef(onRestore);
@@ -23,7 +22,7 @@ export function usePostDraft(
       if (draft) {
         onRestoreRef.current(draft.formData);
       }
-      setIsRestoring(false);
+      setSaveStatus("idle");
     });
   }, []);
 
@@ -51,5 +50,5 @@ export function usePostDraft(
     return () => clearTimeout(timer);
   }, [saveStatus]);
 
-  return { isRestoring, saveStatus };
+  return { saveStatus };
 }
