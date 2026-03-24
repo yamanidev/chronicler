@@ -208,7 +208,7 @@ export function PostForm({ onPublish }: PostFormProps) {
                   )}
                 </div>
                 <div
-                  class="border-taupe-light bg-cream hover:border-sage hover:bg-mint-light/20 min-h-32 w-full rounded-lg border-2 border-dashed p-4 text-center transition"
+                  class="border-taupe-light bg-cream hover:border-sage hover:bg-mint-light/20 flex min-h-32 w-full items-center justify-center rounded-lg border-2 border-dashed text-center transition"
                   onPaste={handlePaste}>
                   <div class="flex flex-col items-center justify-center gap-2">
                     <svg
