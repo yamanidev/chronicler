@@ -352,7 +352,13 @@ export function PostForm({ onPublish }: PostFormProps) {
                           <span class="text-charcoal text-sm">{label}</span>
                           <input
                             type="url"
-                            placeholder={`https://${platform}.com/...`}
+                            placeholder={
+                              {
+                                facebook: "https://www.facebook.com/share/p/bananaPiwPiw/",
+                                twitter: "https://x.com/yamanidev/status/42424242",
+                                linkedin: "https://www.linkedin.com/posts/yamanidev_...",
+                              }[platform]
+                            }
                             class="border-taupe-light text-charcoal focus:border-sage focus:ring-mint-light w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
                             value={links[platform]}
                             onInput={(e) =>
