@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "preact/hooks";
 import { clearDraft, loadDraft, saveDraft } from "../storage";
 import type { PostFormData } from "../types";
 
-type SaveStatus = "idle" | "saving" | "saved";
+export type SaveStatus = "restoring" | "idle" | "saving" | "saved";
 
 export function usePostDraft(
   formData: PostFormData,
@@ -17,9 +17,12 @@ export function usePostDraft(
     onRestoreRef.current = onRestore;
   });
 
+  const isFromIDBRef = useRef(false);
+
   useEffect(() => {
     loadDraft().then((draft) => {
       if (draft) {
+        isFromIDBRef.current = true;
         onRestoreRef.current(draft.formData);
       }
       setSaveStatus("idle");
@@ -29,6 +32,11 @@ export function usePostDraft(
   useEffect(() => {
     if (!isDirty) return;
 
+    if (isFromIDBRef.current) {
+      isFromIDBRef.current = false;
+
+      return;
+    }
     setSaveStatus("saving");
     const timer = setTimeout(async () => {
       await saveDraft({ title, content, attachments, categories, links });
@@ -39,8 +47,9 @@ export function usePostDraft(
   }, [title, content, attachments, categories, links]);
 
   useEffect(() => {
-    if (!isDirty) clearDraft().catch(console.error);
-  }, [isDirty]);
+    if (saveStatus === "restoring" || isDirty || isFromIDBRef.current) return;
+    clearDraft().catch(console.error);
+  }, [isDirty, saveStatus]);
 
   useEffect(() => {
     if (saveStatus !== "saved") return;
