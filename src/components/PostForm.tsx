@@ -384,7 +384,7 @@ export function PostForm({ onPublish }: PostFormProps) {
                     />
                     <button
                       type="button"
-                      class="bg-sage hover:bg-sage-dark rounded-lg rounded-l-none px-6 py-2 font-semibold text-white"
+                      class="bg-sage hover:bg-sage-dark cursor-pointer rounded-lg rounded-l-none px-6 py-2 font-semibold text-white"
                       onClick={handleAddCategory}>
                       Add
                     </button>
@@ -398,7 +398,7 @@ export function PostForm({ onPublish }: PostFormProps) {
                           {category}
                           <button
                             type="button"
-                            class="hover:bg-mint rounded-full"
+                            class="cursor-pointer rounded-full"
                             onClick={() => handleRemoveCategory(category)}>
                             ✕
                           </button>
@@ -452,7 +452,7 @@ export function PostForm({ onPublish }: PostFormProps) {
           <div class="flex justify-end gap-2">
             <button
               type="submit"
-              class="bg-sage hover:bg-sage-dark rounded-lg px-6 py-3 font-semibold text-white">
+              class="bg-sage hover:bg-sage-dark cursor-pointer rounded-lg px-6 py-3 font-semibold text-white">
               Mark as Published
             </button>
           </div>
