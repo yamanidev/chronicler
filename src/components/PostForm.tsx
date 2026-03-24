@@ -136,9 +136,11 @@ export function PostForm({ onPublish }: PostFormProps) {
         const file = item.getAsFile();
         if (file) {
           const timestamp = Date.now();
-          const newFile = new File([file], `pasted-image-${timestamp}.${file.type.split("/")[1]}`, {
-            type: file.type,
-          });
+          const newFile = new File(
+            [file],
+            `pasted-image-${timestamp}-${i}.${file.type.split("/")[1]}`,
+            { type: file.type },
+          );
           imageFiles.push(newFile);
         }
       }
