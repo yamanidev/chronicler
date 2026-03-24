@@ -1,4 +1,5 @@
 import { useState, useEffect } from "preact/hooks";
+import { SUPPORTED_PLATFORMS } from "../constants";
 import type { Platform, PostFormData } from "../types";
 import { copyToClipboard, isFileSystemAccessSupported, slugify } from "../utils";
 
@@ -12,7 +13,11 @@ export function PostForm({ onPublish }: PostFormProps) {
   const [attachments, setAttachments] = useState<File[]>([]);
   const [categoryInput, setCategoryInput] = useState("");
   const [categories, setCategories] = useState<string[]>([]);
-  const [platforms, setPlatforms] = useState<Platform[]>([]);
+  const [links, setLinks] = useState<Record<Platform, string>>({
+    facebook: "",
+    linkedin: "",
+    twitter: "",
+  });
   const [copied, setCopied] = useState<"content" | "attachments" | null>(null);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
@@ -115,14 +120,6 @@ export function PostForm({ onPublish }: PostFormProps) {
     setAttachments(attachments.filter((_, i) => i !== index));
   };
 
-  const togglePlatform = (platform: Platform) => {
-    if (platforms.includes(platform)) {
-      setPlatforms(platforms.filter((p) => p !== platform));
-    } else {
-      setPlatforms([...platforms, platform]);
-    }
-  };
-
   const handleSubmit = (e: Event) => {
     e.preventDefault();
 
@@ -136,18 +133,16 @@ export function PostForm({ onPublish }: PostFormProps) {
       return;
     }
 
-    if (isFileSystemAccessSupported && platforms.length === 0) {
-      alert("Please select at least one platform");
+    if (isFileSystemAccessSupported && !Object.values(links).some((url) => url.trim())) {
+      alert("Please provide at least one platform link");
       return;
     }
 
-    onPublish({
-      title,
-      content,
-      attachments,
-      categories,
-      platforms,
-    });
+    const filteredLinks = Object.fromEntries(
+      Object.entries(links).filter(([, url]) => url.trim()),
+    ) as Partial<Record<Platform, string>>;
+
+    onPublish({ title, content, attachments, categories, links: filteredLinks });
 
     if (!isFileSystemAccessSupported) {
       setContent("");
@@ -348,20 +343,28 @@ export function PostForm({ onPublish }: PostFormProps) {
               {isFileSystemAccessSupported && (
                 <div>
                   <label class="text-charcoal mb-2 block text-sm font-semibold">
-                    Platforms to Publish
+                    Platform Links
                   </label>
-                  <div class="flex flex-wrap gap-4">
-                    {(["facebook", "linkedin", "twitter"] as Platform[]).map((platform) => (
-                      <label key={platform} class="flex cursor-pointer items-center gap-2">
-                        <input
-                          type="checkbox"
-                          class="border-taupe-light text-sage focus:ring-mint h-4 w-4 rounded focus:ring-2"
-                          checked={platforms.includes(platform)}
-                          onChange={() => togglePlatform(platform)}
-                        />
-                        <span class="text-charcoal capitalize">{platform}</span>
-                      </label>
-                    ))}
+                  <div class="flex gap-3">
+                    {(Object.entries(SUPPORTED_PLATFORMS) as [Platform, string][]).map(
+                      ([platform, label]) => (
+                        <div key={platform} class="flex min-w-0 flex-1 flex-col gap-1">
+                          <span class="text-charcoal text-sm">{label}</span>
+                          <input
+                            type="url"
+                            placeholder={`https://${platform}.com/...`}
+                            class="border-taupe-light text-charcoal focus:border-sage focus:ring-mint-light w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
+                            value={links[platform]}
+                            onInput={(e) =>
+                              setLinks({
+                                ...links,
+                                [platform]: (e.target as HTMLInputElement).value,
+                              })
+                            }
+                          />
+                        </div>
+                      ),
+                    )}
                   </div>
                 </div>
               )}
