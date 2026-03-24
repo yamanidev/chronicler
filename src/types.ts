@@ -8,8 +8,7 @@ export type Post = {
   content: string;
   attachments: File[];
   categories: string[];
-  platforms: Platform[];
-  links?: Record<Platform, string>;
+  links: Partial<Record<Platform, string>>;
 };
 
 export type PostFormData = {
@@ -17,5 +16,5 @@ export type PostFormData = {
   content: string;
   attachments: File[];
   categories: string[];
-  platforms: Platform[];
+  links: Partial<Record<Platform, string>>;
 };

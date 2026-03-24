@@ -2,15 +2,14 @@ import { useEffect, useState } from "preact/hooks";
 import { CurrentStep } from "./components/CurrentStep";
 import { DirectoryIndicator } from "./components/DirectoryIndicator";
 import { AppFooter } from "./components/AppFooter";
-import type { Platform, Post, PostFormData } from "./types";
+import type { Post, PostFormData } from "./types";
 import { usePersistedDirectoryHandle } from "./hooks/usePersistedDirectoryHandle";
 import { archivePost, isFileSystemAccessSupported, slugify } from "./utils";
 
 export function App() {
-  const [step, setStep] = useState<"welcome" | "form" | "links" | "success">("welcome");
+  const [step, setStep] = useState<"welcome" | "form" | "success">("welcome");
   const { directoryHandle, isLoading, grantedOnLoad, persistHandle } =
     usePersistedDirectoryHandle();
-  const [postData, setPostData] = useState<PostFormData | null>(null);
   const [archivedDirectory, setArchivedDirectory] = useState<string>("");
 
   useEffect(() => {
@@ -22,20 +21,12 @@ export function App() {
     setStep("form");
   };
 
-  const handlePublish = (data: PostFormData) => {
+  const handlePublish = async (data: PostFormData) => {
     if (!isFileSystemAccessSupported) return;
 
-    setPostData(data);
-    setStep("links");
-  };
-
-  const handleLinksSubmit = async (links: Record<Platform, string>) => {
-    if (!postData) return;
-
     const post: Post = {
-      ...postData,
-      slug: slugify(postData.title),
-      links,
+      ...data,
+      slug: slugify(data.title),
     };
 
     if (directoryHandle) {
@@ -49,12 +40,10 @@ export function App() {
       }
     } else {
       alert("No archive folder selected. Post was not saved.");
-      setStep("form");
     }
   };
 
   const handleCreateAnother = () => {
-    setPostData(null);
     setArchivedDirectory("");
     setStep("form");
   };
@@ -76,11 +65,9 @@ export function App() {
         isLoading={isLoading}
         grantedOnLoad={grantedOnLoad}
         directoryHandle={directoryHandle}
-        postData={postData}
         archivedDirectory={archivedDirectory}
         onWelcomeContinue={handleWelcomeContinue}
         onPublish={handlePublish}
-        onLinksSubmit={handleLinksSubmit}
         onCreateAnother={handleCreateAnother}
       />
       {directoryHandle && step !== "welcome" && (
