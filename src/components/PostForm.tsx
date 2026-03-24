@@ -192,7 +192,7 @@ export function PostForm({ onPublish }: PostFormProps) {
   };
 
   return (
-    <div class="bg-cream min-h-screen p-8">
+    <div class="bg-cream min-h-screen p-8 pt-10 sm:p-8">
       <div class="mx-auto max-w-3xl">
         <div class="mb-6 text-center">
           <h1 class="font-bitter text-charcoal text-4xl font-bold">Create Post</h1>
