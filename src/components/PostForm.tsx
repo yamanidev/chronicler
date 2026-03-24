@@ -1,7 +1,12 @@
 import { useState, useEffect } from "preact/hooks";
 import { SUPPORTED_PLATFORMS } from "../constants";
 import type { Platform, PostFormData } from "../types";
-import { copyToClipboard, isFileSystemAccessSupported, slugify } from "../utils";
+import {
+  copyToClipboard,
+  isFileSystemAccessSupported,
+  slugify,
+  validatePlatformUrl,
+} from "../utils";
 
 interface PostFormProps {
   onPublish: (data: PostFormData) => void;
@@ -141,6 +146,13 @@ export function PostForm({ onPublish }: PostFormProps) {
     const filteredLinks = Object.fromEntries(
       Object.entries(links).filter(([, url]) => url.trim()),
     ) as Partial<Record<Platform, string>>;
+
+    for (const [platform, url] of Object.entries(filteredLinks) as [Platform, string][]) {
+      if (!validatePlatformUrl(platform, url)) {
+        alert(`Invalid ${SUPPORTED_PLATFORMS[platform]} link`);
+        return;
+      }
+    }
 
     onPublish({ title, content, attachments, categories, links: filteredLinks });
 
