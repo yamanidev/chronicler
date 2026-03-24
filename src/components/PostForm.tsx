@@ -1,5 +1,8 @@
 import { useState, useEffect } from "preact/hooks";
 import { SUPPORTED_PLATFORMS } from "../constants";
+import { clearDraft } from "../storage";
+import { usePostDraft } from "../hooks/usePostDraft";
+import { DraftStatusIndicator } from "./DraftStatusIndicator";
 import type { Platform, PostFormData } from "../types";
 import {
   copyToClipboard,
@@ -28,6 +31,29 @@ export function PostForm({ onPublish }: PostFormProps) {
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
   const slug = slugify(title);
+  const isDirty = Boolean(
+    title ||
+    content ||
+    attachments.length ||
+    categories.length ||
+    Object.values(links).some(Boolean),
+  );
+
+  const { saveStatus } = usePostDraft(
+    { title, content, attachments, categories, links },
+    isDirty,
+    (data) => {
+      setTitle(data.title);
+      setContent(data.content);
+      setAttachments(data.attachments);
+      setCategories(data.categories);
+      setLinks({
+        facebook: data.links.facebook ?? "",
+        linkedin: data.links.linkedin ?? "",
+        twitter: data.links.twitter ?? "",
+      });
+    },
+  );
 
   useEffect(() => {
     previewUrls.forEach((url) => URL.revokeObjectURL(url));
@@ -155,6 +181,7 @@ export function PostForm({ onPublish }: PostFormProps) {
       }
     }
 
+    clearDraft().catch(console.error);
     onPublish({ title, content, attachments, categories, links: filteredLinks });
 
     if (!isFileSystemAccessSupported) {
@@ -174,7 +201,8 @@ export function PostForm({ onPublish }: PostFormProps) {
         </div>
 
         <form onSubmit={handleSubmit} class="space-y-6">
-          <div class="rounded-lg bg-white p-6 shadow-lg">
+          <div class="relative rounded-lg bg-white p-6 shadow-lg">
+            <DraftStatusIndicator saveStatus={saveStatus} />
             <div class="space-y-6">
               {isFileSystemAccessSupported && (
                 <div>
