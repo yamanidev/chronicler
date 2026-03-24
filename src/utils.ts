@@ -51,6 +51,19 @@ ${post.content}`;
   return markdown;
 }
 
+export function getTweetLength(text: string): number {
+  // Loosely based on the official documentation
+  // https://docs.x.com/fundamentals/counting-characters
+  const urlReplaced = text.replace(/https?:\/\/\S+/g, "_".repeat(23));
+  const segmenter = new Intl.Segmenter();
+  let count = 0;
+  for (const { segment } of segmenter.segment(urlReplaced)) {
+    count += /\p{Emoji_Presentation}/u.test(segment) ? 2 : 1;
+  }
+
+  return count;
+}
+
 export function validatePlatformUrl(platform: Platform, url: string): boolean {
   try {
     const { hostname, pathname } = new URL(url);
