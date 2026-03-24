@@ -1,4 +1,4 @@
-export function SocialLinks() {
+export function AppFooter() {
   return (
     <div class="fixed right-4 bottom-4 flex items-center gap-3">
       <a
