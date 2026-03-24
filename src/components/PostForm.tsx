@@ -3,6 +3,7 @@ import { SUPPORTED_PLATFORMS } from "../constants";
 import type { Platform, PostFormData } from "../types";
 import {
   copyToClipboard,
+  getTweetLength,
   isFileSystemAccessSupported,
   slugify,
   validatePlatformUrl,
@@ -206,6 +207,33 @@ export function PostForm({ onPublish }: PostFormProps) {
                   class="border-taupe-light text-charcoal focus:border-sage focus:ring-mint-light h-40 w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
                   value={content}
                   onInput={(e) => setContent((e.target as HTMLTextAreaElement).value)}></textarea>
+                {(() => {
+                  const TWITTER_WORDS_LIMIT = 280;
+                  const twitterFilled = links.twitter.trim();
+                  const remaining = TWITTER_WORDS_LIMIT - getTweetLength(content);
+                  const isOver = remaining < 0;
+                  const isClose = !isOver && remaining <= 20;
+
+                  let colorClass = "text-taupe";
+                  if (twitterFilled) {
+                    if (isOver) colorClass = "text-charcoal font-semibold";
+                    else if (isClose) colorClass = "text-taupe-dark";
+                  }
+
+                  return (
+                    <div class="mt-1 flex items-center justify-end gap-2 text-xs">
+                      {twitterFilled && isOver && (
+                        <span class="text-charcoal italic">Hope you're on the $8/month plan!</span>
+                      )}
+                      {twitterFilled && isClose && (
+                        <span class="text-taupe-dark italic">
+                          Every character is fighting for its life.
+                        </span>
+                      )}
+                      <span class={colorClass}>{remaining}</span>
+                    </div>
+                  );
+                })()}
               </div>
 
               <div>
