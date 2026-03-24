@@ -70,7 +70,10 @@ export function validatePlatformUrl(platform: Platform, url: string): boolean {
     const baseDomain = hostname.split(".").slice(-2).join(".");
     switch (platform) {
       case "facebook":
-        return baseDomain === "facebook.com" && pathname.startsWith("/share/p/");
+        return (
+          baseDomain === "facebook.com" &&
+          (pathname.startsWith("/share/p/") || /^\/[^/]+\/posts\//.test(pathname))
+        );
       case "twitter":
         return (
           (baseDomain === "x.com" || baseDomain === "twitter.com") &&
