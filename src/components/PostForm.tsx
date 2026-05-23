@@ -28,8 +28,16 @@ export function PostForm({ onPublish }: PostFormProps) {
     linkedin: "",
     twitter: "",
   });
-  const [copied, setCopied] = useState<"content" | "attachments" | null>(null);
+  const [toast, setToast] = useState<{ msg: string; n: number } | null>(null);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!toast) return;
+    const id = setTimeout(() => setToast(null), 2000);
+    return () => clearTimeout(id);
+  }, [toast]);
+
+  const showToast = (msg: string) => setToast((t) => ({ msg, n: (t?.n ?? 0) + 1 }));
 
   const slug = slugify(title);
   const isDirty = Boolean(
@@ -71,38 +79,28 @@ export function PostForm({ onPublish }: PostFormProps) {
   const handleCopyContent = async () => {
     try {
       await copyToClipboard(content);
-      setCopied("content");
-      setTimeout(() => setCopied(null), 2000);
+      showToast("Copied text");
     } catch (error) {
       alert("Failed to copy content");
     }
   };
 
-  const handleCopyAttachments = async () => {
-    if (attachments.length === 0) return;
+  const handleCopyAttachment = async (index: number) => {
+    const file = attachments[index];
+    if (!file) return;
 
     try {
-      const imageFiles = attachments.filter((f) => f.type.startsWith("image/"));
-
-      if (imageFiles.length > 0) {
-        const clipboardItems = await Promise.all(
-          imageFiles.map(async (file) => {
-            const blob = new Blob([await file.arrayBuffer()], { type: file.type });
-            return new ClipboardItem({ [file.type]: blob });
-          }),
-        );
-
-        await navigator.clipboard.write(clipboardItems);
+      if (file.type.startsWith("image/")) {
+        const blob = new Blob([await file.arrayBuffer()], { type: file.type });
+        await navigator.clipboard.write([new ClipboardItem({ [file.type]: blob })]);
+        showToast("Copied attachment");
       } else {
-        const attachmentList = attachments.map((f) => f.name).join("\n");
-        await copyToClipboard(attachmentList);
+        await copyToClipboard(file.name);
+        showToast("Copied text");
       }
-
-      setCopied("attachments");
-      setTimeout(() => setCopied(null), 2000);
     } catch (error) {
-      console.error("Failed to copy attachments:", error);
-      alert("Failed to copy attachments");
+      console.error("Failed to copy attachment:", error);
+      alert("Failed to copy attachment");
     }
   };
 
@@ -254,7 +252,7 @@ export function PostForm({ onPublish }: PostFormProps) {
                     class="text-ash hover:bg-paper rounded px-3 py-1 text-sm font-medium disabled:opacity-50"
                     onClick={handleCopyContent}
                     disabled={!content}>
-                    {copied === "content" ? "Copied!" : "Copy"}
+                    Copy
                   </button>
                 </div>
                 <textarea
@@ -293,17 +291,7 @@ export function PostForm({ onPublish }: PostFormProps) {
               </div>
 
               <div>
-                <div class="mb-2 flex items-center justify-between">
-                  <label class="text-ink text-sm font-semibold">Attachments</label>
-                  {attachments.length > 0 && (
-                    <button
-                      type="button"
-                      class="text-ash hover:bg-paper rounded px-3 py-1 text-sm font-medium"
-                      onClick={handleCopyAttachments}>
-                      {copied === "attachments" ? "Copied!" : "Copy"}
-                    </button>
-                  )}
-                </div>
+                <label class="text-ink mb-2 block text-sm font-semibold">Attachments</label>
                 <div
                   class="border-ash-light bg-paper hover:border-spine hover:bg-note-light flex min-h-32 w-full items-center justify-center rounded-lg border-2 border-dashed text-center transition"
                   onPaste={handlePaste}>
@@ -387,6 +375,12 @@ export function PostForm({ onPublish }: PostFormProps) {
                           </svg>
                         </button>
                         <p class="text-ash mt-1 truncate text-xs">{file.name}</p>
+                        <button
+                          type="button"
+                          class="text-ash hover:bg-paper mt-1 w-full rounded py-0.5 text-xs font-medium"
+                          onClick={() => handleCopyAttachment(index)}>
+                          Copy
+                        </button>
                       </div>
                     ))}
                   </div>
@@ -484,6 +478,14 @@ export function PostForm({ onPublish }: PostFormProps) {
           </div>
         </form>
       </div>
+      {toast && (
+        <div
+          role="status"
+          aria-live="polite"
+          class="bg-ink text-paper fixed right-4 bottom-4 z-50 rounded-lg px-4 py-2 text-sm font-medium shadow-lg">
+          {toast.msg}
+        </div>
+      )}
     </div>
   );
 }
