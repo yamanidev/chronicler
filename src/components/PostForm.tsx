@@ -197,7 +197,10 @@ export function PostForm({ onPublish }: PostFormProps) {
     <div class="bg-paper min-h-screen p-8 pt-10 sm:p-8">
       <div class="mx-auto max-w-3xl">
         <div class="mb-6 text-center">
-          <h1 class="font-bitter text-ink text-4xl font-bold">Create Post</h1>
+          <div class="flex items-center justify-center gap-3">
+            <img src="/logo-color.svg" alt="" class="h-12 w-12" />
+            <h1 class="font-bitter text-ink text-4xl font-bold">Create Post</h1>
+          </div>
           <p class="text-ash mt-2">
             Write your content, copy it to each platform, then mark as published.
           </p>
