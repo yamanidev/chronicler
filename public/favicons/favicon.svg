@@ -1,0 +1,14 @@
+<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" fill="none" stroke-linecap="round">
+  <style>
+    .outer { stroke: #1f4d4a; }
+    .inner { stroke: #5e8a86; }
+    @media (prefers-color-scheme: dark) {
+      .outer { stroke: #5e8a86; }
+      .inner { stroke: #dce8e6; }
+    }
+  </style>
+  <g transform="translate(10, 10)">
+    <path class="outer" d="M 92 38 A 44 44 0 1 0 92 62" stroke-width="14"/>
+    <path class="inner" d="M 73 44 A 24 24 0 1 0 73 56" stroke-width="8"/>
+  </g>
+</svg>

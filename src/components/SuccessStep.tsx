@@ -28,9 +28,10 @@ export function SuccessStep({
           </div>
         </div>
 
-        <h2 class="font-bitter text-ink mt-4 text-center text-2xl font-bold">
-          Post Archived Successfully!
-        </h2>
+        <div class="mt-4 flex items-center justify-center gap-3">
+          <img src="/logo-color.svg" alt="" class="h-12 w-12" />
+          <h2 class="font-bitter text-ink text-2xl font-bold">Post Archived Successfully!</h2>
+        </div>
 
         <p class="text-ash mt-2 text-center">Your post has been saved to the archive folder.</p>
         <AppCredit class="justify-center" />

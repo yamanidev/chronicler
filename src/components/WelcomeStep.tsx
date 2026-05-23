@@ -12,7 +12,10 @@ export function WelcomeStep({
     return (
       <div class="bg-paper flex min-h-screen items-center justify-center p-8">
         <div class="w-full max-w-lg rounded-lg bg-white p-8 shadow-lg">
-          <h2 class="font-bitter text-ink mb-2 text-3xl font-bold">Chronicler</h2>
+          <div class="mb-2 flex items-center gap-3">
+            <img src="/logo-color.svg" alt="" class="h-12 w-12" />
+            <h2 class="font-bitter text-ink text-3xl font-bold">Chronicler</h2>
+          </div>
           <p class="text-ink mb-4 text-lg font-medium">Write once, copy to platforms.</p>
           <p class="text-ash mb-4">
             A simple place to draft your social media posts and copy them to your clipboard.
@@ -75,7 +78,10 @@ export function WelcomeStep({
   return (
     <div class="bg-paper flex min-h-screen items-center justify-center p-8">
       <div class="w-full max-w-lg rounded-lg bg-white p-8 shadow-lg">
-        <h2 class="font-bitter text-ink mb-2 text-3xl font-bold">Chronicler</h2>
+        <div class="mb-2 flex items-center gap-3">
+          <img src="/logo-color.svg" alt="" class="h-12 w-12" />
+          <h2 class="font-bitter text-ink text-3xl font-bold">Chronicler</h2>
+        </div>
         <p class="text-ink mb-4 text-lg font-medium">
           Write once, copy to platforms, archive locally.
         </p>

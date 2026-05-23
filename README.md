@@ -1,3 +1,10 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="public/logo-inverted.svg" />
+    <img src="public/logo-color.svg" alt="Chronicler logo" width="64" />
+  </picture>
+</p>
+
 # Chronicler
 
 Write once, copy to platforms, archive locally.
