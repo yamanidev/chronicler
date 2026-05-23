@@ -15,7 +15,7 @@ export function DraftStatusIndicator({ saveStatus }: DraftStatusIndicatorProps) 
       class={`absolute top-3 right-3 flex items-center gap-1.5 rounded-full px-3 py-1 text-xs transition-all duration-300 ${text ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-1 opacity-0"}`}>
       {saveStatus === "saving" && (
         <svg
-          class="text-taupe h-3 w-3 animate-spin"
+          class="text-ash h-3 w-3 animate-spin"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24">
@@ -34,7 +34,7 @@ export function DraftStatusIndicator({ saveStatus }: DraftStatusIndicatorProps) 
           />
         </svg>
       )}
-      <span class="text-taupe">{text}</span>
+      <span class="text-ash">{text}</span>
     </div>
   );
 }

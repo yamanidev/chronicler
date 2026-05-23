@@ -11,7 +11,7 @@ export function DirectoryIndicator({
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
-        class="stroke-taupe h-4 w-4 shrink-0">
+        class="stroke-ash h-4 w-4 shrink-0">
         <path
           stroke-linecap="round"
           stroke-linejoin="round"
@@ -19,10 +19,10 @@ export function DirectoryIndicator({
           d="M3 7a2 2 0 012-2h4l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"
         />
       </svg>
-      <span class="text-charcoal font-medium">{directoryHandle.name}</span>
-      <span class="text-taupe">•</span>
+      <span class="text-ink font-medium">{directoryHandle.name}</span>
+      <span class="text-ash">•</span>
       <button
-        class="text-sage hover:text-sage-dark cursor-pointer font-medium transition"
+        class="text-spine hover:text-spine-dark cursor-pointer font-medium transition"
         onClick={onChangeDirectory}>
         Change folder
       </button>

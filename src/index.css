@@ -4,18 +4,16 @@
   --font-bitter: "Bitter", ui-serif, Georgia, serif;
   --font-raleway: "Raleway", ui-sans-serif, system-ui, sans-serif;
 
-  --color-charcoal: #12130f;
-  --color-sage: #5b9279;
-  --color-sage-light: #6fa88a;
-  --color-sage-dark: #4a7561;
-  --color-mint: #8fcb9b;
-  --color-mint-light: #a8d9b1;
-  --color-mint-dark: #76b885;
-  --color-cream: #eae6e5;
-  --color-cream-dark: #ddd8d6;
-  --color-taupe: #8f8073;
-  --color-taupe-light: #a59688;
-  --color-taupe-dark: #77685e;
+  --color-ink: #1c1a16;
+  --color-spine: #1f4d4a;
+  --color-spine-dark: #143634;
+  --color-note: #5e8a86;
+  --color-note-light: #dce8e6;
+  --color-paper: #ebebe7;
+  --color-paper-edge: #dcdcd8;
+  --color-ash: #6e6459;
+  --color-ash-light: #857a6b;
+  --color-ash-dark: #564f47;
 }
 
 @font-face {

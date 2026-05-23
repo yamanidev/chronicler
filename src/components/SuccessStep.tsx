@@ -8,10 +8,10 @@ export function SuccessStep({
   onCreateAnother: () => void;
 }) {
   return (
-    <div class="bg-cream flex min-h-screen items-center justify-center p-8">
+    <div class="bg-paper flex min-h-screen items-center justify-center p-8">
       <div class="w-full max-w-lg rounded-lg bg-white p-8 shadow-lg">
         <div class="flex justify-center">
-          <div class="bg-mint rounded-full p-3">
+          <div class="bg-note rounded-full p-3">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="h-12 w-12 text-white"
@@ -28,18 +28,18 @@ export function SuccessStep({
           </div>
         </div>
 
-        <h2 class="font-bitter text-charcoal mt-4 text-center text-2xl font-bold">
+        <h2 class="font-bitter text-ink mt-4 text-center text-2xl font-bold">
           Post Archived Successfully!
         </h2>
 
-        <p class="text-taupe mt-2 text-center">Your post has been saved to the archive folder.</p>
+        <p class="text-ash mt-2 text-center">Your post has been saved to the archive folder.</p>
         <AppCredit class="justify-center" />
 
-        <div class="bg-mint-light/30 mt-6 rounded-lg p-4">
+        <div class="bg-note-light mt-6 rounded-lg p-4">
           <div class="flex gap-3">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="stroke-sage h-6 w-6 shrink-0"
+              class="stroke-spine h-6 w-6 shrink-0"
               fill="none"
               viewBox="0 0 24 24">
               <path
@@ -50,9 +50,9 @@ export function SuccessStep({
               />
             </svg>
             <div class="flex-1">
-              <div class="text-charcoal font-semibold">Saved to:</div>
-              <div class="text-taupe-dark mt-1 text-sm">
-                <code class="bg-mint-light rounded px-2 py-1">{directoryName}/post.md</code>
+              <div class="text-ink font-semibold">Saved to:</div>
+              <div class="text-ash-dark mt-1 text-sm">
+                <code class="bg-note-light rounded px-2 py-1">{directoryName}/post.md</code>
               </div>
             </div>
           </div>
@@ -60,7 +60,7 @@ export function SuccessStep({
 
         <div class="mt-6 flex justify-center">
           <button
-            class="bg-sage hover:bg-sage-dark rounded-lg px-6 py-3 font-semibold text-white"
+            class="bg-spine hover:bg-spine-dark rounded-lg px-6 py-3 font-semibold text-white"
             onClick={onCreateAnother}>
             Create Another Post
           </button>

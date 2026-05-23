@@ -194,11 +194,11 @@ export function PostForm({ onPublish }: PostFormProps) {
   };
 
   return (
-    <div class="bg-cream min-h-screen p-8 pt-10 sm:p-8">
+    <div class="bg-paper min-h-screen p-8 pt-10 sm:p-8">
       <div class="mx-auto max-w-3xl">
         <div class="mb-6 text-center">
-          <h1 class="font-bitter text-charcoal text-4xl font-bold">Create Post</h1>
-          <p class="text-taupe mt-2">
+          <h1 class="font-bitter text-ink text-4xl font-bold">Create Post</h1>
+          <p class="text-ash mt-2">
             Write your content, copy it to each platform, then mark as published.
           </p>
           <AppCredit class="justify-center" />
@@ -211,11 +211,11 @@ export function PostForm({ onPublish }: PostFormProps) {
               {isFileSystemAccessSupported && (
                 <div>
                   <div class="mb-2 flex items-center gap-1.5">
-                    <label class="text-charcoal text-sm font-semibold">Title</label>
+                    <label class="text-ink text-sm font-semibold">Title</label>
                     <div class="group relative flex items-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="text-taupe h-4 w-4 cursor-default"
+                        class="text-ash h-4 w-4 cursor-default"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -226,29 +226,29 @@ export function PostForm({ onPublish }: PostFormProps) {
                           d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                         />
                       </svg>
-                      <div class="bg-charcoal text-cream pointer-events-none absolute bottom-full left-1/2 mb-2 w-56 -translate-x-1/2 rounded-lg px-3 py-2 text-xs opacity-0 transition-opacity group-hover:opacity-100">
+                      <div class="bg-ink text-paper pointer-events-none absolute bottom-full left-1/2 mb-2 w-56 -translate-x-1/2 rounded-lg px-3 py-2 text-xs opacity-0 transition-opacity group-hover:opacity-100">
                         Used to name the archive folder and generate the post slug.
-                        <div class="border-t-charcoal] absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent"></div>
+                        <div class="border-t-ink absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent"></div>
                       </div>
                     </div>
                   </div>
                   <input
                     type="text"
                     placeholder="Enter post title"
-                    class="border-taupe-light text-charcoal focus:border-sage focus:ring-mint-light w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
+                    class="border-ash-light text-ink focus:border-spine focus:ring-spine/20 w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
                     value={title}
                     onInput={(e) => setTitle((e.target as HTMLInputElement).value)}
                   />
-                  {title && <p class="text-sage mt-1 text-sm">Slug: {slug}</p>}
+                  {title && <p class="text-spine mt-1 text-sm">Slug: {slug}</p>}
                 </div>
               )}
 
               <div>
                 <div class="mb-2 flex items-center justify-between">
-                  <label class="text-charcoal text-sm font-semibold">Content</label>
+                  <label class="text-ink text-sm font-semibold">Content</label>
                   <button
                     type="button"
-                    class="text-taupe hover:bg-cream rounded px-3 py-1 text-sm font-medium disabled:opacity-50"
+                    class="text-ash hover:bg-paper rounded px-3 py-1 text-sm font-medium disabled:opacity-50"
                     onClick={handleCopyContent}
                     disabled={!content}>
                     {copied === "content" ? "Copied!" : "Copy"}
@@ -257,7 +257,7 @@ export function PostForm({ onPublish }: PostFormProps) {
                 <textarea
                   dir="auto"
                   placeholder="Write your post content here..."
-                  class="border-taupe-light text-charcoal focus:border-sage focus:ring-mint-light h-40 w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
+                  class="border-ash-light text-ink focus:border-spine focus:ring-spine/20 h-40 w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
                   value={content}
                   onInput={(e) => setContent((e.target as HTMLTextAreaElement).value)}></textarea>
                 {(() => {
@@ -267,19 +267,19 @@ export function PostForm({ onPublish }: PostFormProps) {
                   const isOver = remaining < 0;
                   const isClose = !isOver && remaining <= 20;
 
-                  let colorClass = "text-taupe";
+                  let colorClass = "text-ash";
                   if (twitterFilled) {
-                    if (isOver) colorClass = "text-charcoal font-semibold";
-                    else if (isClose) colorClass = "text-taupe-dark";
+                    if (isOver) colorClass = "text-ink font-semibold";
+                    else if (isClose) colorClass = "text-ash-dark";
                   }
 
                   return (
                     <div class="mt-1 flex items-center justify-end gap-2 text-xs">
                       {twitterFilled && isOver && (
-                        <span class="text-charcoal italic">Hope you're on the $8/month plan!</span>
+                        <span class="text-ink italic">Hope you're on the $8/month plan!</span>
                       )}
                       {twitterFilled && isClose && (
-                        <span class="text-taupe-dark italic">
+                        <span class="text-ash-dark italic">
                           Every character is fighting for its life.
                         </span>
                       )}
@@ -291,23 +291,23 @@ export function PostForm({ onPublish }: PostFormProps) {
 
               <div>
                 <div class="mb-2 flex items-center justify-between">
-                  <label class="text-charcoal text-sm font-semibold">Attachments</label>
+                  <label class="text-ink text-sm font-semibold">Attachments</label>
                   {attachments.length > 0 && (
                     <button
                       type="button"
-                      class="text-taupe hover:bg-cream rounded px-3 py-1 text-sm font-medium"
+                      class="text-ash hover:bg-paper rounded px-3 py-1 text-sm font-medium"
                       onClick={handleCopyAttachments}>
                       {copied === "attachments" ? "Copied!" : "Copy"}
                     </button>
                   )}
                 </div>
                 <div
-                  class="border-taupe-light bg-cream hover:border-sage hover:bg-mint-light/20 flex min-h-32 w-full items-center justify-center rounded-lg border-2 border-dashed text-center transition"
+                  class="border-ash-light bg-paper hover:border-spine hover:bg-note-light flex min-h-32 w-full items-center justify-center rounded-lg border-2 border-dashed text-center transition"
                   onPaste={handlePaste}>
                   <div class="flex flex-col items-center justify-center gap-2">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      class="text-taupe h-8 w-8"
+                      class="text-ash h-8 w-8"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor">
@@ -318,9 +318,9 @@ export function PostForm({ onPublish }: PostFormProps) {
                         d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
                       />
                     </svg>
-                    <p class="text-taupe text-sm">
+                    <p class="text-ash text-sm">
                       Paste images here or{" "}
-                      <label class="text-sage cursor-pointer hover:underline">
+                      <label class="text-spine cursor-pointer hover:underline">
                         browse files
                         <input
                           type="file"
@@ -337,7 +337,7 @@ export function PostForm({ onPublish }: PostFormProps) {
                   <div class="mt-4 grid grid-cols-2 gap-3 md:grid-cols-3">
                     {attachments.map((file, index) => (
                       <div key={`${file.name}-${index}`} class="group relative">
-                        <div class="border-cream-dark bg-cream aspect-square overflow-hidden rounded-lg border">
+                        <div class="border-paper-edge bg-paper aspect-square overflow-hidden rounded-lg border">
                           {file.type.startsWith("image/") && previewUrls[index] ? (
                             <img
                               src={previewUrls[index]}
@@ -349,7 +349,7 @@ export function PostForm({ onPublish }: PostFormProps) {
                               <div class="text-center">
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
-                                  class="text-taupe mx-auto h-8 w-8"
+                                  class="text-ash mx-auto h-8 w-8"
                                   fill="none"
                                   viewBox="0 0 24 24"
                                   stroke="currentColor">
@@ -360,14 +360,14 @@ export function PostForm({ onPublish }: PostFormProps) {
                                     d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
                                   />
                                 </svg>
-                                <p class="text-taupe-dark mt-1 text-xs">{file.name}</p>
+                                <p class="text-ash-dark mt-1 text-xs">{file.name}</p>
                               </div>
                             </div>
                           )}
                         </div>
                         <button
                           type="button"
-                          class="bg-taupe-dark hover:bg-charcoal absolute top-1 right-1 rounded-full p-1 text-white opacity-0 transition group-hover:opacity-100"
+                          class="bg-ash-dark hover:bg-ink absolute top-1 right-1 rounded-full p-1 text-white opacity-0 transition group-hover:opacity-100"
                           onClick={() => handleRemoveAttachment(index)}>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -383,7 +383,7 @@ export function PostForm({ onPublish }: PostFormProps) {
                             />
                           </svg>
                         </button>
-                        <p class="text-taupe mt-1 truncate text-xs">{file.name}</p>
+                        <p class="text-ash mt-1 truncate text-xs">{file.name}</p>
                       </div>
                     ))}
                   </div>
@@ -392,12 +392,12 @@ export function PostForm({ onPublish }: PostFormProps) {
 
               {isFileSystemAccessSupported && (
                 <div>
-                  <label class="text-charcoal mb-2 block text-sm font-semibold">Categories</label>
+                  <label class="text-ink mb-2 block text-sm font-semibold">Categories</label>
                   <div class="flex">
                     <input
                       type="text"
                       placeholder="Add a category"
-                      class="border-taupe-light text-charcoal focus:border-sage focus:ring-mint-light flex-1 rounded-lg rounded-r-none border border-r-0 px-4 py-2 focus:ring-2 focus:outline-none"
+                      class="border-ash-light text-ink focus:border-spine focus:ring-spine/20 flex-1 rounded-lg rounded-r-none border border-r-0 px-4 py-2 focus:ring-2 focus:outline-none"
                       value={categoryInput}
                       onInput={(e) => setCategoryInput((e.target as HTMLInputElement).value)}
                       onKeyPress={(e) => {
@@ -409,7 +409,7 @@ export function PostForm({ onPublish }: PostFormProps) {
                     />
                     <button
                       type="button"
-                      class="bg-sage hover:bg-sage-dark cursor-pointer rounded-lg rounded-l-none px-6 py-2 font-semibold text-white"
+                      class="bg-spine hover:bg-spine-dark cursor-pointer rounded-lg rounded-l-none px-6 py-2 font-semibold text-white"
                       onClick={handleAddCategory}>
                       Add
                     </button>
@@ -419,7 +419,7 @@ export function PostForm({ onPublish }: PostFormProps) {
                       {categories.map((category) => (
                         <span
                           key={category}
-                          class="bg-mint-light text-charcoal inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-medium">
+                          class="bg-note-light text-ink inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-medium">
                           {category}
                           <button
                             type="button"
@@ -436,14 +436,12 @@ export function PostForm({ onPublish }: PostFormProps) {
 
               {isFileSystemAccessSupported && (
                 <div>
-                  <label class="text-charcoal mb-2 block text-sm font-semibold">
-                    Platform Links
-                  </label>
+                  <label class="text-ink mb-2 block text-sm font-semibold">Platform Links</label>
                   <div class="flex gap-3">
                     {(Object.entries(SUPPORTED_PLATFORMS) as [Platform, string][]).map(
                       ([platform, label]) => (
                         <div key={platform} class="flex min-w-0 flex-1 flex-col gap-1">
-                          <label for={platform} class="text-charcoal text-sm">
+                          <label for={platform} class="text-ink text-sm">
                             {label}
                           </label>
                           <input
@@ -456,7 +454,7 @@ export function PostForm({ onPublish }: PostFormProps) {
                                 linkedin: "https://www.linkedin.com/posts/yamanidev_...",
                               }[platform]
                             }
-                            class="border-taupe-light text-charcoal focus:border-sage focus:ring-mint-light w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
+                            class="border-ash-light text-ink focus:border-spine focus:ring-spine/20 w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
                             value={links[platform]}
                             onInput={(e) =>
                               setLinks({
@@ -477,7 +475,7 @@ export function PostForm({ onPublish }: PostFormProps) {
           <div class="flex justify-end gap-2">
             <button
               type="submit"
-              class="bg-sage hover:bg-sage-dark cursor-pointer rounded-lg px-6 py-3 font-semibold text-white">
+              class="bg-spine hover:bg-spine-dark cursor-pointer rounded-lg px-6 py-3 font-semibold text-white">
               Mark as Published
             </button>
           </div>
