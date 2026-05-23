@@ -19,7 +19,7 @@ interface PostFormProps {
 
 export function PostForm({ onPublish }: PostFormProps) {
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [text, setText] = useState("");
   const [attachments, setAttachments] = useState<File[]>([]);
   const [categoryInput, setCategoryInput] = useState("");
   const [categories, setCategories] = useState<string[]>([]);
@@ -41,19 +41,15 @@ export function PostForm({ onPublish }: PostFormProps) {
 
   const slug = slugify(title);
   const isDirty = Boolean(
-    title ||
-    content ||
-    attachments.length ||
-    categories.length ||
-    Object.values(links).some(Boolean),
+    title || text || attachments.length || categories.length || Object.values(links).some(Boolean),
   );
 
   const { saveStatus } = usePostDraft(
-    { title, content, attachments, categories, links },
+    { title, text, attachments, categories, links },
     isDirty,
     (data) => {
       setTitle(data.title);
-      setContent(data.content);
+      setText(data.text);
       setAttachments(data.attachments);
       setCategories(data.categories);
       setLinks({
@@ -76,12 +72,12 @@ export function PostForm({ onPublish }: PostFormProps) {
     };
   }, [attachments]);
 
-  const handleCopyContent = async () => {
+  const handleCopyText = async () => {
     try {
-      await copyToClipboard(content);
+      await copyToClipboard(text);
       showToast("Copied text");
     } catch (error) {
-      alert("Failed to copy content");
+      alert("Failed to copy text");
     }
   };
 
@@ -156,8 +152,8 @@ export function PostForm({ onPublish }: PostFormProps) {
       return;
     }
 
-    if (!content.trim()) {
-      alert("Please provide content");
+    if (!text.trim()) {
+      alert("Please provide text");
       return;
     }
 
@@ -178,10 +174,10 @@ export function PostForm({ onPublish }: PostFormProps) {
     }
 
     clearDraft().catch(console.error);
-    onPublish({ title, content, attachments, categories, links: filteredLinks });
+    onPublish({ title, text, attachments, categories, links: filteredLinks });
 
     if (!isFileSystemAccessSupported) {
-      setContent("");
+      setText("");
       setAttachments([]);
     }
   };
@@ -195,7 +191,7 @@ export function PostForm({ onPublish }: PostFormProps) {
             <h1 class="font-bitter text-ink text-4xl font-bold">Create Post</h1>
           </div>
           <p class="text-ash mt-2">
-            Write your content, copy it to each platform, then mark as published.
+            Write your post, copy it to each platform, then mark as published.
           </p>
           <AppCredit class="justify-center" />
         </div>
@@ -241,25 +237,25 @@ export function PostForm({ onPublish }: PostFormProps) {
 
               <div>
                 <div class="mb-2 flex items-center justify-between">
-                  <label class="text-ink text-sm font-semibold">Content</label>
+                  <label class="text-ink text-sm font-semibold">Text</label>
                   <button
                     type="button"
                     class="text-ash hover:bg-paper rounded px-3 py-1 text-sm font-medium disabled:opacity-50"
-                    onClick={handleCopyContent}
-                    disabled={!content}>
+                    onClick={handleCopyText}
+                    disabled={!text}>
                     Copy
                   </button>
                 </div>
                 <textarea
                   dir="auto"
-                  placeholder="Write your post content here..."
+                  placeholder="Write your post here..."
                   class="border-ash-light text-ink focus:border-spine focus:ring-spine/20 h-40 w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
-                  value={content}
-                  onInput={(e) => setContent((e.target as HTMLTextAreaElement).value)}></textarea>
+                  value={text}
+                  onInput={(e) => setText((e.target as HTMLTextAreaElement).value)}></textarea>
                 {(() => {
                   const TWITTER_WORDS_LIMIT = 280;
                   const twitterFilled = links.twitter.trim();
-                  const remaining = TWITTER_WORDS_LIMIT - getTweetLength(content);
+                  const remaining = TWITTER_WORDS_LIMIT - getTweetLength(text);
                   const isOver = remaining < 0;
                   const isClose = !isOver && remaining <= 20;
 

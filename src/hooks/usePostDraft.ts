@@ -10,7 +10,7 @@ export function usePostDraft(
   onRestore: (data: PostFormData) => void,
 ): { saveStatus: SaveStatus } {
   const [saveStatus, setSaveStatus] = useState<SaveStatus>("restoring");
-  const { title, content, attachments, categories, links } = formData;
+  const { title, text, attachments, categories, links } = formData;
 
   const onRestoreRef = useRef(onRestore);
   useEffect(() => {
@@ -39,12 +39,12 @@ export function usePostDraft(
     }
     setSaveStatus("saving");
     const timer = setTimeout(async () => {
-      await saveDraft({ title, content, attachments, categories, links });
+      await saveDraft({ title, text, attachments, categories, links });
       setSaveStatus("saved");
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [title, content, attachments, categories, links]);
+  }, [title, text, attachments, categories, links]);
 
   useEffect(() => {
     if (saveStatus === "restoring" || isDirty || isFromIDBRef.current) return;

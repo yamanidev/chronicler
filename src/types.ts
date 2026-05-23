@@ -5,7 +5,7 @@ export type Platform = keyof typeof SUPPORTED_PLATFORMS;
 export type Post = {
   title: string;
   slug: string;
-  content: string;
+  text: string;
   attachments: File[];
   categories: string[];
   links: Partial<Record<Platform, string>>;
@@ -13,7 +13,7 @@ export type Post = {
 
 export type PostFormData = {
   title: string;
-  content: string;
+  text: string;
   attachments: File[];
   categories: string[];
   links: Partial<Record<Platform, string>>;

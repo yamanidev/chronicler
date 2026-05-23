@@ -34,7 +34,7 @@ categories: ${categoriesYaml}
 ${platformsYaml}
 ---
 
-${post.content}`;
+${post.text}`;
 
   if (post.attachments.length > 0) {
     markdown += "\n\n## Attachments\n";
