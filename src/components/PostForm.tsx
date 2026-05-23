@@ -85,22 +85,17 @@ export function PostForm({ onPublish }: PostFormProps) {
     }
   };
 
-  const handleCopyAttachment = async (index: number) => {
+  const handleCopyImage = async (index: number) => {
     const file = attachments[index];
     if (!file) return;
 
     try {
-      if (file.type.startsWith("image/")) {
-        const blob = new Blob([await file.arrayBuffer()], { type: file.type });
-        await navigator.clipboard.write([new ClipboardItem({ [file.type]: blob })]);
-        showToast("Copied attachment");
-      } else {
-        await copyToClipboard(file.name);
-        showToast("Copied text");
-      }
+      const blob = new Blob([await file.arrayBuffer()], { type: file.type });
+      await navigator.clipboard.write([new ClipboardItem({ [file.type]: blob })]);
+      showToast("Copied image");
     } catch (error) {
-      console.error("Failed to copy attachment:", error);
-      alert("Failed to copy attachment");
+      console.error("Failed to copy image:", error);
+      alert("Failed to copy image");
     }
   };
 
@@ -291,7 +286,7 @@ export function PostForm({ onPublish }: PostFormProps) {
               </div>
 
               <div>
-                <label class="text-ink mb-2 block text-sm font-semibold">Attachments</label>
+                <label class="text-ink mb-2 block text-sm font-semibold">Images</label>
                 <div
                   class="border-ash-light bg-paper hover:border-spine hover:bg-note-light flex min-h-32 w-full items-center justify-center rounded-lg border-2 border-dashed text-center transition"
                   onPaste={handlePaste}>
@@ -317,7 +312,7 @@ export function PostForm({ onPublish }: PostFormProps) {
                           type="file"
                           class="hidden"
                           multiple
-                          accept="image/*,video/*"
+                          accept="image/*"
                           onChange={handleFileChange}
                         />
                       </label>
@@ -378,7 +373,7 @@ export function PostForm({ onPublish }: PostFormProps) {
                         <button
                           type="button"
                           class="text-ash hover:bg-paper mt-1 w-full rounded py-0.5 text-xs font-medium"
-                          onClick={() => handleCopyAttachment(index)}>
+                          onClick={() => handleCopyImage(index)}>
                           Copy
                         </button>
                       </div>
