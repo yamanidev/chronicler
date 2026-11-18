@@ -1,13 +1,44 @@
 import { SUPPORTED_PLATFORMS } from "./constants";
 import type { Platform, Post } from "./types";
 
+// Arabic harakat, superscript alef and Quranic annotation marks, plus tatweel.
+const ARABIC_DIACRITICS_AND_TATWEEL = /[ً-ٰٟۖ-ۭـ]/g;
+const MAXIMUM_SLUG_CHARACTERS = 80;
+// Linux limits a folder name to 255 bytes, and the date prefix uses 11 of them.
+const MAXIMUM_SLUG_BYTES = 200;
+
+function truncateSlug(slug: string): string {
+  const encoder = new TextEncoder();
+  let truncated = "";
+  let characterCount = 0;
+  for (const { segment } of new Intl.Segmenter().segment(slug)) {
+    const candidate = truncated + segment;
+    if (
+      characterCount === MAXIMUM_SLUG_CHARACTERS ||
+      encoder.encode(candidate).length > MAXIMUM_SLUG_BYTES
+    ) {
+      break;
+    }
+
+    truncated = candidate;
+    characterCount++;
+  }
+
+  return truncated;
+}
+
 export function slugify(text: string): string {
-  return text
+  const slug = text
     .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, "")
-    .replace(/[\s_-]+/g, "-")
+    // One encoding per character, so typed and pasted titles produce the same slug.
+    .normalize("NFC")
+    .replace(ARABIC_DIACRITICS_AND_TATWEEL, "")
+    // Marks only survive attached to a letter, which drops emoji variation selectors.
+    .replace(/(?<![\p{L}\p{M}])\p{M}+/gu, "")
+    .replace(/[^\p{L}\p{M}\p{N}]+/gu, "-")
     .replace(/^-+|-+$/g, "");
+
+  return truncateSlug(slug).replace(/-+$/, "");
 }
 
 export function formatDate(date: Date): string {

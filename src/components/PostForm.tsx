@@ -152,6 +152,13 @@ export function PostForm({ onPublish }: PostFormProps) {
       return;
     }
 
+    if (isFileSystemAccessSupported && !slug) {
+      alert(
+        "The title must contain at least one letter or number, since it names the archive folder",
+      );
+      return;
+    }
+
     if (!text.trim()) {
       alert("Please provide text");
       return;
