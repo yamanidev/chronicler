@@ -66,21 +66,36 @@ export function getTweetLength(text: string): number {
 
 export function validatePlatformUrl(platform: Platform, url: string): boolean {
   try {
-    const { hostname, pathname } = new URL(url);
+    const { hostname, pathname, searchParams } = new URL(url);
     const baseDomain = hostname.split(".").slice(-2).join(".");
     switch (platform) {
       case "facebook":
         return (
-          baseDomain === "facebook.com" &&
-          (pathname.startsWith("/share/p/") || /^\/[^/]+\/posts\//.test(pathname))
+          (baseDomain === "facebook.com" || baseDomain === "fb.com") &&
+          (pathname.startsWith("/share/p/") ||
+            /^\/[^/]+\/posts\//.test(pathname) ||
+            /^\/groups\/[^/]+\/(posts|permalink)\/[^/]+/.test(pathname) ||
+            (/^\/(permalink|story)\.php$/.test(pathname) && searchParams.has("story_fbid")))
         );
+
       case "twitter":
         return (
           (baseDomain === "x.com" || baseDomain === "twitter.com") &&
-          /^\/[^/]+\/status\/\d+/.test(pathname)
+          /^\/(i\/web|[^/]+)\/status\/\d+/.test(pathname)
         );
+
       case "linkedin":
-        return baseDomain === "linkedin.com" && pathname.startsWith("/posts/");
+        // lnkd.in also shortens outbound links to other sites, so only its post path is accepted.
+        if (hostname === "lnkd.in") {
+          return pathname.startsWith("/p/");
+        }
+
+        return (
+          baseDomain === "linkedin.com" &&
+          (pathname.startsWith("/posts/") ||
+            pathname.startsWith("/pulse/") ||
+            /^\/(embed\/)?feed\/update\/urn:li:(activity|share|ugcPost):\d+/.test(pathname))
+        );
     }
   } catch {
     return false;
