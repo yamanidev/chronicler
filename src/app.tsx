@@ -3,7 +3,12 @@ import { CurrentStep } from "./components/CurrentStep";
 import { DirectoryIndicator } from "./components/DirectoryIndicator";
 import type { Post, PostFormData } from "./types";
 import { usePersistedDirectoryHandle } from "./hooks/usePersistedDirectoryHandle";
-import { archivePost, isFileSystemAccessSupported, slugify } from "./utils";
+import {
+  ArchiveDirectoryTakenError,
+  archivePost,
+  isFileSystemAccessSupported,
+  slugify,
+} from "./utils";
 
 export function App() {
   const [step, setStep] = useState<"welcome" | "form" | "success">("welcome");
@@ -34,6 +39,14 @@ export function App() {
         setArchivedDirectory(directoryName);
         setStep("success");
       } catch (error) {
+        if (error instanceof ArchiveDirectoryTakenError) {
+          alert(
+            `A post was already archived today as "${error.directoryName}". Change the title and try again.`,
+          );
+
+          return;
+        }
+
         console.error("Failed to archive post:", error);
         alert("Failed to archive post. Please try again.");
       }

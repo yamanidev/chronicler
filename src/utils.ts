@@ -113,12 +113,46 @@ export async function copyToClipboard(text: string): Promise<void> {
   }
 }
 
+export class ArchiveDirectoryTakenError extends Error {
+  readonly directoryName: string;
+
+  constructor(directoryName: string) {
+    super(`An archive folder named "${directoryName}" already exists`);
+    this.name = "ArchiveDirectoryTakenError";
+    this.directoryName = directoryName;
+  }
+}
+
+async function entryExists(directoryHandle: FileSystemDirectoryHandle, name: string) {
+  try {
+    await directoryHandle.getDirectoryHandle(name);
+
+    return true;
+  } catch (error) {
+    if (error instanceof DOMException && error.name === "NotFoundError") {
+      return false;
+    }
+
+    // A file rather than a folder already uses this name.
+    if (error instanceof DOMException && error.name === "TypeMismatchError") {
+      return true;
+    }
+
+    throw error;
+  }
+}
+
 export async function archivePost(
   post: Post,
   directoryHandle: FileSystemDirectoryHandle,
 ): Promise<string> {
   const datePrefix = getDatePrefix(new Date());
   const directoryName = `${datePrefix}-${post.slug}`;
+
+  // Writing into an existing folder would overwrite the earlier post's files.
+  if (await entryExists(directoryHandle, directoryName)) {
+    throw new ArchiveDirectoryTakenError(directoryName);
+  }
 
   const postDirectoryHandle = await directoryHandle.getDirectoryHandle(directoryName, {
     create: true,
